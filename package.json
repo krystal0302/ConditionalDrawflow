@@ -1,0 +1,24 @@
+{
+  "name": "vite_react_vanillaJS_multi_entry_points",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@rollup/plugin-inject": "^5.0.3",
+    "vite": "^4.4.5"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.0.4",
+    "admin-lte": "^3.2.0",
+    "bootstrap": "^5.3.2",
+    "drawflow": "^0.0.59",
+    "jquery": "^3.7.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
