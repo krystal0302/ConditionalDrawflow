@@ -6,6 +6,7 @@ import { MainLayout } from '@MAINCOMPONENTS/ConditionMainLayout';
 import { getConditionNodeTemplate } from '@MAINCOMPONENTS/ConditionTemplates';
 import { getConditionItemOptionTemplate } from '@MAINCOMPONENTS/ConditionItemOptionTemplate';
 import {
+    translateToNodeDrawFlowID,
     translateToNodeElementID,
     adjustTextMaxLength,
     adjustNumberDisplayText
@@ -359,3 +360,170 @@ export class ConditionDrawflow extends ConditionBase {
         this.adjustIfConditionLayout();
     }
 }
+
+
+$(document).on('click', '.add-condition', function (e) {
+	// Get condition template
+	let conditionTemplate = document.getElementById('conditionGroup');
+	let condition = document.importNode(conditionTemplate.content, true);
+
+	// target node
+	const elementID = $(this).parent().closest('.drawflow-node').attr('id');
+	const drawFlowNodeID = translateToNodeDrawFlowID(elementID);
+
+	// Add Output
+	editor.addNodeOutput(drawFlowNodeID);
+
+	// Handle add condition
+	let targetIfConditonNode = document.getElementById(elementID);
+	let numberOfCondition = targetIfConditonNode.querySelectorAll(".condition-group").length;
+	let refNode = targetIfConditonNode.querySelector(".add-condition")
+
+	// change condition placeholder
+	condition.querySelector('.condition-input').setAttribute('value',`Condition ${numberOfCondition+1}`);
+	condition.querySelector('.condition-input').setAttribute('disabled', true);
+	refNode.parentNode.insertBefore(condition, refNode);
+
+	// update connection
+	editor.updateConnectionNodes(elementID);
+
+	// Update Drawwflow Content
+	const tmpCpoy = targetIfConditonNode.cloneNode(true);
+	let tmpNodePlaceholder = document.createElement("div");
+	tmpNodePlaceholder.appendChild(tmpCpoy.querySelector('.drawflow_content_node'));
+
+	// clear style and expand css
+	let addConditionBtn = tmpNodePlaceholder.querySelector(".add-condition");
+	addConditionBtn.classList.remove("active");
+	let elseCondition = tmpNodePlaceholder.querySelector(".if-condition-else");
+	elseCondition.style = null;
+
+	editor.drawflow.drawflow.Home.data[drawFlowNodeID].html = tmpNodePlaceholder.firstChild.innerHTML;
+
+	adjustIfConditionLayout()
+
+	// check if  sidebar open
+	const sidebarDrawFlowNodeID = getCurrentSideBarSelectNode().node_id;
+	if (sidebarDrawFlowNodeID === undefined || `${sidebarDrawFlowNodeID.trim()}`.length === 0){
+		// sidebar close
+	} else {
+		// sidebar open
+		if (sidebarDrawFlowNodeID === drawFlowNodeID) {
+			const addConditionBtn = document.querySelector('.sidebar-add-condition');
+
+			const eventObj = {
+				isTriggerFromDrawflowAdd: true
+			}
+			$(addConditionBtn).trigger('click', eventObj);
+		}
+	}
+});
+
+$(document).on('change', '.drawflow-task-priority-select', function (e) {
+    let selected_val = $(this).val();
+	const elementID = $(this).parent().closest('.drawflow-node').attr('id');
+    const drawFlowNodeID = translateToNodeDrawFlowID(elementID);
+    let component_html = editor.getNodeFromId(drawFlowNodeID).html;
+    let component_select = $(component_html).find(".drawflow-task-priority-select");
+    component_select.find("option").removeAttr('selected')
+    component_select.find(`option[value="${selected_val}"]`).attr('selected', true);
+	let backgroundColor = '#00284D';
+
+	switch (`${selected_val}`) {
+		case '5':
+			backgroundColor = '#0029FF';
+			break;
+		case '4':
+			backgroundColor = '#0029FF';
+			break;
+		default:
+			backgroundColor = '#00284D';
+			break;
+	}
+	// change html css color
+	document.getElementById(elementID).getElementsByClassName("drawflow-task-priority-select")[0].setAttribute('style',`background-color: ${backgroundColor};`);
+
+    const placeholder = document.createElement("div");
+    placeholder.innerHTML = component_html;
+    let node = placeholder.firstElementChild;
+    let current_select = node
+    current_select.getElementsByTagName('select')[0].innerHTML = component_select.html()
+	current_select.getElementsByTagName('select')[0].setAttribute('style',`background-color: ${backgroundColor};`);
+    // console.log(current_select.outerHTML)
+    // console.log(component_html)
+    editor.drawflow.drawflow.Home.data[drawFlowNodeID].html = current_select.outerHTML
+
+    // console.log(editor.getNodeFromId(drawFlowNodeID).html)
+
+	// change sidebar general setting if open
+	let sidebarPrioritySelect = document.getElementsByClassName('general-setting-priority-select');
+	if (sidebarPrioritySelect.length > 0) {
+		const sidebarPrioritySelectVal = `${sidebarPrioritySelect[0].value}`;
+		let sidebarPriorityOptions = sidebarPrioritySelect[0].querySelectorAll('option');
+		sidebarPriorityOptions.forEach(option => {
+			if (selected_val === `${option.value}`) {
+				option.selected = true
+			} else {
+				option.selected = false
+			}
+		});
+	}
+});
+
+// edit behavior
+$(document).on("click", ".more-info-edit", (e) => {
+	let currentEditInfo = e.currentTarget;
+	let parent = currentEditInfo.closest('.drawflow-node');
+
+	openFlowSidebar();
+	drawFlowUnselectNode(parent);
+})
+
+$(document).on("click", ".more-info-delete", (e) => {
+	console.log(e)
+	let anchor = e.currentTarget;
+	let closestNode = anchor.closest('.drawflow-node');
+	let nodeId= closestNode.id;
+	editor.removeNodeId(nodeId);
+})
+
+// drawflow expand node behaviors
+$(document).on("click", ".drawflow-show-behavior-list-info", function () {
+	let parentNode = this.closest('.drawflow-node');
+	let nodeID = parentNode.id;
+
+	let vehicleDiv = parentNode.getElementsByClassName('vehicle-info')[0];
+	vehicleDiv.classList.toggle('active');
+	let collapseDiv = parentNode.getElementsByClassName('collapse')[0];
+	$(collapseDiv).collapse('toggle');
+})
+
+$(document).on('shown.bs.collapse', '.collapse.behavior-list', function () {
+	let parentNode = this.closest('.drawflow-node');
+	let nodeID = parentNode.id;
+
+	editor.updateConnectionNodes(nodeID);
+})
+
+$(document).on('hidden.bs.collapse', '.collapse.behavior-list', function () {
+	let parentNode = this.closest('.drawflow-node');
+	let nodeID = parentNode.id;
+
+	editor.updateConnectionNodes(nodeID);
+})
+
+$(document).on('input', '.annotation-input', function () {
+	const parentNode = this.closest('.drawflow-node');
+	const drawFlowNodeID = translateToNodeDrawFlowID(parentNode.id);
+
+	let component_html = editor.getNodeFromId(drawFlowNodeID).html;
+	const placeholder = document.createElement("div");
+	placeholder.innerHTML = component_html;
+	let node = placeholder.firstElementChild;
+	let current_select = node;
+
+	const drawflowAnnotation = current_select.querySelector('.annotation-input');
+	drawflowAnnotation.setAttribute('value', $(this).val());
+
+	editor.drawflow.drawflow.Home.data[drawFlowNodeID].html = current_select.outerHTML;
+})

@@ -25,7 +25,7 @@ const templateHTML = {
       <div class="title-box">
         <div class="col-12">
           <span class="normal-node-text"></span>
-          <button type="button" class="btn btn-primary dropdown-toggle more-info" data-toggle="dropdown"><i
+          <button type="button" class="btn btn-primary dropdown-toggle more-info" data-bs-toggle="dropdown"><i
               class="fas fa-ellipsis-v"></i></button>
           <div class="dropdown-menu more-info-menu">
             <a class="dropdown-item more-info-edit" href="#">Edit</a>
@@ -64,7 +64,7 @@ const templateHTML = {
     drawflowIfConditionNode: `
     <div class="drawflow-if-condition-node">
     <div class="title-box">
-      <button type="button" class="btn btn-primary dropdown-toggle more-info" data-toggle="dropdown"><i
+      <button type="button" class="btn btn-primary dropdown-toggle more-info" data-bs-toggle="dropdown"><i
           class="fas fa-ellipsis-v"></i></button>
       <div class="dropdown-menu more-info-menu">
         <a class="dropdown-item more-info-edit" href="#">Edit</a>

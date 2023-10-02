@@ -690,23 +690,23 @@
   }
 
   .more-info-menu {
-    min-width: 125px;
-    background-color: #44494d;
+    min-width: 125px !important;
+    background-color: #44494d !important;
   }
 
   .more-info-menu a {
-    color: white;
+    color: white !important;
   }
 
   .more-info-menu a:hover {
-    color: white;
-    background-color: #5b6064;
+    color: white !important;
+    background-color: #5b6064 !important;
   }
 
   .more-info-menu a:focus,
   .more-info-menu a:active {
-    color: white;
-    background-color: #2c3337;
+    color: white !important;
+    background-color: #2c3337 !important;
   }
 
   .drawflow
