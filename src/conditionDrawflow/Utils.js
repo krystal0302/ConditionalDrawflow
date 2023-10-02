@@ -8,6 +8,11 @@ export const translateToNodeDrawFlowID = (nodeid) => {
 	return nodeID
 }
 
+
+export const adjustNumberDisplayText = (displayNumber) => {
+	return `${displayNumber}`.length < 2? `0${displayNumber}`: `${displayNumber}`;
+}
+
 export const adjustTextMaxLength = (text) => {
 	const maxLength = 20;
 

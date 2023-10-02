@@ -7,7 +7,8 @@ import { getConditionNodeTemplate } from '@MAINCOMPONENTS/ConditionTemplates';
 import { getConditionItemOptionTemplate } from '@MAINCOMPONENTS/ConditionItemOptionTemplate';
 import {
     translateToNodeElementID,
-    adjustTextMaxLength
+    adjustTextMaxLength,
+    adjustNumberDisplayText
 } from './Utils'
 
 import '@MAINSTYLE/conditionDrawflowStyle.css';
@@ -190,7 +191,8 @@ export class ConditionDrawflow extends ConditionBase {
             var className = name.replace(/\s/g, '_');
 
             // add behavior info to drawflow
-            let behaviorItem = document.getElementById("behaviorListItem");
+            // let behaviorItem = document.getElementById("behaviorListItem");
+            let behaviorItem = getConditionNodeTemplate('behaviorListItem');
             let behaviorCollapseDiv = node.querySelector('.behavior-list');
             let behaviors = CONDITION_FLOW_DATA.currentDataSetting.items[name];
 

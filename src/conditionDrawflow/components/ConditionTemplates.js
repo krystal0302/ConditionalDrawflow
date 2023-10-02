@@ -101,7 +101,12 @@ const templateHTML = {
         </div>
       </div>
     </div>
-  </div>`
+  </div>`,
+  behaviorListItem: `
+    <div class="col-12 behavior-list-item">
+      <span>00 Moving</span>
+    </div>
+  `
 }
 
 export function getConditionNodeTemplate (requestTemplate) {

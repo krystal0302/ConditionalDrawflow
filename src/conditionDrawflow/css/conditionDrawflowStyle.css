@@ -686,7 +686,7 @@
   }
 
   .more-info::after {
-    content: none;
+    content: none !important;
   }
 
   .more-info-menu {
