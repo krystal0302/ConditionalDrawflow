@@ -39,6 +39,7 @@ export default defineConfig( ({ command, mode }) => {
       alias: {
         '@':  ROOT,
         '@MAINSTYLE':  resolve(__dirname, 'src/conditionDrawflow/css'),
+        '@MAINCOMPONENTS':  resolve(__dirname, 'src/conditionDrawflow/components'),
       },
     },
     server: {
