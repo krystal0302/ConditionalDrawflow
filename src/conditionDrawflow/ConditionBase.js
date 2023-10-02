@@ -70,6 +70,15 @@ export class ConditionBase {
         this.conditionDrawFlowData.haveUnSaveChange = haveUnSaveData;
     }
 
+    deleteNodeDataInCurrentSavedData(nodeID) {
+        if (this.conditionDrawFlowData.currentSavedData.hasOwnProperty(nodeID)) {
+            delete this.conditionDrawFlowData.currentSavedData[nodeID];
+            console.log(`Delete ${nodeID} saved data`)
+        } else {
+            console.log(`${nodeID} have no saved data to delete`)
+        }
+    }
+
     testLog() {
         return 'f'
     }
