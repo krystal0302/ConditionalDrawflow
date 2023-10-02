@@ -18,6 +18,12 @@ import '@MAINSTYLE/conditionDrawflowStyle.css';
 
 import { ConditionBase } from './ConditionBase';
 
+import {
+    conditionDrawflowNodeRemoved,
+    conditionDrawflowEditClick,
+    conditionDrawflowAddConditionClick
+} from './ConditionDrawflowEvent';
+
 export class ConditionDrawflow extends ConditionBase {
 	constructor(targetElementID, isCustomMode=false) {
         super(isCustomMode);
@@ -29,6 +35,10 @@ export class ConditionDrawflow extends ConditionBase {
 
         this.initLayout(targetElementID);
         this.initDrawFlow();
+
+        if (isCustomMode) {
+            this.setSetCustomAttribute();
+        }
 	}
 
     initLayout (targetElementID) {
@@ -197,6 +207,7 @@ export class ConditionDrawflow extends ConditionBase {
             CONDITION_DRAW_FLOW.deleteNodeDataInCurrentSavedData(`node-${removeNodeId}`);
             CONDITION_DRAW_FLOW.resetCurrentSelectedNodeWhenRemove();
             // Event dispatch here
+            document.dispatchEvent(conditionDrawflowNodeRemoved);
             // closeFlowSidebar();
         })
 
@@ -508,6 +519,7 @@ export class ConditionDrawflow extends ConditionBase {
             CONDITION_DRAW_FLOW.adjustIfConditionLayout()
 
             // check if  sidebar open
+            document.dispatchEvent(conditionDrawflowAddConditionClick);
              // Event dispatch here
             // const sidebarDrawFlowNodeID = getCurrentSideBarSelectNode().node_id;
             // if (sidebarDrawFlowNodeID === undefined || `${sidebarDrawFlowNodeID.trim()}`.length === 0){
@@ -580,6 +592,7 @@ export class ConditionDrawflow extends ConditionBase {
             let parent = currentEditInfo.closest('.drawflow-node');
 
             // Event dispatch here
+            document.dispatch(conditionDrawflowEditClick)
             // openFlowSidebar();
             CONDITION_DRAW_FLOW.drawFlowUnselectNode(parent);
         })
