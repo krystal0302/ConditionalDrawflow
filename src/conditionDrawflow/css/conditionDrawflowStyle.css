@@ -327,12 +327,12 @@
   }
 
   .drawflow-node .title-box {
-    height: 50px !important;
-    line-height: 50px !important;
-    background: var(--background-box-title) !important;
-    border-bottom: 1px solid #e9e9e9 !important;
-    border-radius: 4px 4px 0px 0px !important;
-    padding-left: 10px !important;
+    height: 50px;
+    line-height: 50px;
+    background: var(--background-box-title);
+    border-bottom: 1px solid #e9e9e9;
+    border-radius: 4px 4px 0px 0px;
+    padding-left: 10px;
   }
 
   .drawflow .title-box svg {

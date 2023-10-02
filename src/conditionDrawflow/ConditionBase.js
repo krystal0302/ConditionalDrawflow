@@ -79,6 +79,17 @@ export class ConditionBase {
         }
     }
 
+    resetConditionDrawFlowSavedData() {
+        this.conditionDrawFlowData.currentSavedData = {};
+        this.conditionDrawFlowData.drawFlowUIData = undefined;
+        this.setUnSaveChange()
+
+        this.currentSelectedNode = {
+            node_id: undefined,
+            nodType: 'normal'
+        };
+    }
+
     testLog() {
         return 'f'
     }

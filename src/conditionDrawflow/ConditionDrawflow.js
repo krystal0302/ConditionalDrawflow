@@ -16,7 +16,7 @@ import {
 
 import '@MAINSTYLE/conditionDrawflowStyle.css';
 
-import { ConditionBase } from './ConditionBase'
+import { ConditionBase } from './ConditionBase';
 
 export class ConditionDrawflow extends ConditionBase {
 	constructor(targetElementID, isCustomMode=false) {
@@ -54,6 +54,79 @@ export class ConditionDrawflow extends ConditionBase {
         this.drawflowItemDragStart();
         this.drawflowInteractiveEvent();
         this.interactEvent();
+
+        this.setDrawFlowWithData();
+    }
+
+    defaultDrawFlowData() {
+        let defaultDrawflowData =
+        {
+            "drawflow": {
+                "Home": {
+                    "data": {
+                        "2": {
+                            "id": 2,
+                            "name": "start",
+                            "data": {},
+                            "class": "start",
+                            "html": "",
+                            "typenode": false,
+                            "inputs": {},
+                            "outputs": {
+                                "output_1": {
+                                    "connections": []
+                                }
+                            },
+                            "pos_x": 59,
+                            "pos_y": 304
+                        },
+                        "3": {
+                            "id": 3,
+                            "name": "finish",
+                            "data": {},
+                            "class": "finish",
+                            "html": "",
+                            "typenode": false,
+                            "inputs": {
+                                "input_1": {
+                                    "connections": []
+                                }
+                            },
+                            "outputs": {},
+                            "pos_x": 632,
+                            "pos_y": 300
+                        }
+                    }
+                }
+            }
+        };
+
+        const startNodeHTML = getConditionNodeTemplate('drawflowStartNode').innerHTML;
+        const finishNodeHTML = getConditionNodeTemplate('drawflowFinishNode').innerHTML;
+
+        defaultDrawflowData.drawflow.Home.data[2].html = startNodeHTML;
+        defaultDrawflowData.drawflow.Home.data[3].html = finishNodeHTML;
+
+        return defaultDrawflowData
+    }
+
+    setDrawFlowWithData () {
+        console.log("Init DrawFlow")
+        const initData = this.conditionDrawFlowData.drawFlowUIData === undefined? this.defaultDrawFlowData(): this.conditionDrawFlowData.drawFlowUIData;
+
+        this.drawflowEditor.clear();
+        this.drawflowEditor.import(initData);
+
+        const optionData = this.conditionDrawFlowData.currentDataSetting.items;
+        this.updateDrawFlowOption(optionData);
+        this.adjustIfConditionLayout();
+    }
+
+    resetPanel() {
+        if (!confirm('Clear the current flow draft?')) { return; }
+
+        this.resetConditionDrawFlowSavedData();
+        this.setDrawFlowWithData();
     }
 
     drawflowItemDragStart() {
