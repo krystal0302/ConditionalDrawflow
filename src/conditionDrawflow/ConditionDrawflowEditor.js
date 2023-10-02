@@ -6,7 +6,7 @@ import { MainLayout } from './components/ConditionMainLayout';
 import { getConditionNodeTemplate } from './components/ConditionTemplates';
 import { translateToNodeElementID } from './Utils'
 
-import './css/conditionDrawflowStyle.css';
+import '@MAINSTYLE/conditionDrawflowStyle.css';
 
 export class ConditionDrawflowEditor {
 	constructor(flowPageObj, targetElementID) {
