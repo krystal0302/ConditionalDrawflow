@@ -592,7 +592,7 @@ export class ConditionDrawflow extends ConditionBase {
             let parent = currentEditInfo.closest('.drawflow-node');
 
             // Event dispatch here
-            document.dispatch(conditionDrawflowEditClick)
+            document.dispatchEvent(conditionDrawflowEditClick)
             // openFlowSidebar();
             CONDITION_DRAW_FLOW.drawFlowUnselectNode(parent);
         })
